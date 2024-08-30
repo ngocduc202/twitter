@@ -142,29 +142,29 @@ export const getAllPosts = async (req, res) => {
   }
 }
 
-export const getLikedPost = async (req, res) => {
-  const userId = req.params.id
-  try {
-    const user = await User.findById(userId)
-    if(!user){
-      return res.status(404).json({error: "User not found"})
-    }
+export const getLikedPosts = async (req, res) => {
+	const userId = req.params.id;
 
-    const likePosts = await Post.find({_id: {$in: user.likedPosts}})
-    .populate({
-      path:"user",
-      select:"-password"
-    }).populate({
-      path:"comments.user",
-      select:"-password"
-    })
+	try {
+		const user = await User.findById(userId);
+		if (!user) return res.status(404).json({ error: "User not found" });
 
-    res.status(200).json(likePosts)
-  } catch (error) {
-    console.log("Error in getLikedPost ", error.message)
-    res.status(500).json({error: "Internal server error"})
-  }
-}
+		const likedPosts = await Post.find({ _id: { $in: user.likedPosts } })
+			.populate({
+				path: "user",
+				select: "-password",
+			})
+			.populate({
+				path: "comments.user",
+				select: "-password",
+			});
+
+		res.status(200).json(likedPosts);
+	} catch (error) {
+		console.log("Error in getLikedPosts controller: ", error);
+		res.status(500).json({ error: "Internal server error" });
+	}
+};
 
 export const getFollowingPosts = async (req, res) => {
   try {
