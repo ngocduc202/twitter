@@ -6,7 +6,7 @@ import authRoutes from './routers/auth.routes.js'
 import userRoutes from './routers/user.routes.js'
 import postRoutes from './routers/post.routes.js'
 import notificationRoutes from './routers/notification.routes.js'
-import connectMongoDB from './db/connetMongoDb.js'
+import connectMongoDb from './db/connetMongoDb.js'
 import cookieParser from 'cookie-parser'
 
 dotenv.config()
@@ -40,5 +40,5 @@ if(process.env.NODE_ENV === "production"){
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
-  connectMongoDB()
+  connectMongoDb()
 })
