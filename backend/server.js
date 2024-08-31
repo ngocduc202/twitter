@@ -6,7 +6,7 @@ import authRoutes from './routers/auth.routes.js'
 import userRoutes from './routers/user.routes.js'
 import postRoutes from './routers/post.routes.js'
 import notificationRoutes from './routers/notification.routes.js'
-import connectMongoDb from './db/connetMongoDb.js'
+import connectMongoDb from './db/connectMongoDb.js'
 import cookieParser from 'cookie-parser'
 
 dotenv.config()
