@@ -5,6 +5,7 @@ import { IoNotifications } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { BiLogOut } from "react-icons/bi";
+import { IoSearch } from "react-icons/io5";
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-hot-toast'
 
@@ -55,6 +56,15 @@ const Sidebar = () => {
             >
               <IoNotifications className='w-6 h-6' />
               <span className='text-lg hidden md:block'>Notifications</span>
+            </Link>
+          </li>
+          <li className='flex justify-center md:justify-start'>
+            <Link
+              to='/search'
+              className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
+            >
+              <IoSearch className='w-6 h-6' />
+              <span className='text-lg hidden md:block'>Search</span>
             </Link>
           </li>
 

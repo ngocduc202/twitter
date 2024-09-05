@@ -144,3 +144,21 @@ export const updateUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 }
+
+export const searchUser = async (req, res) => {
+  try {
+    const {username , fullName} = req.query
+    const searchCriteria = {};
+    if (username) {
+      searchCriteria.username = { $regex: username, $options: 'i' }; // Tìm kiếm không phân biệt hoa thường
+    }
+    if (fullName) {
+      searchCriteria.fullName = { $regex: fullName, $options: 'i' };
+    }
+    const users = await User.find(searchCriteria).select('-password');
+    res.status(200).json(users)
+  } catch (error) {
+    console.log("Error in searchUser: ", error.message);
+    res.status(500).json({ error: error.message });
+  }
+}

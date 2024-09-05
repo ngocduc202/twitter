@@ -9,6 +9,8 @@ import ProfilePage from "./pages/profile/ProfilePage"
 import { Toaster } from "react-hot-toast"
 import { useQuery } from "@tanstack/react-query"
 import LoadingSpinner from "./components/commom/LoadingSpinner"
+import NavMobile from "./components/commom/NavMobile"
+import Search from "./pages/search/Search"
 
 
 function App() {
@@ -36,13 +38,19 @@ function App() {
     )
   }
   return (
-    <div className='flex max-w-6xl mx-auto'>
-      {authUser && <Sidebar />}
+    <div className='flex max-w-6xl mx-auto pb-10 md:pb-0'>
+      <div className="hidden md:flex">
+        {authUser && <Sidebar />}
+      </div>
+      <div className=" block md:hidden">
+        {authUser && <NavMobile />}
+      </div>
       <Routes>
         <Route path='/' element={authUser ? <HomePage /> : <Navigate to="/login" />} />
         <Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
         <Route path='/signup' element={!authUser ? <SignUpPage /> : <Navigate to="/" />} />
         <Route path='/notifications' element={authUser ? <NotificationPage /> : <Navigate to="/login" />} />
+        <Route path='/search' element={authUser ? <Search /> : <Navigate to="/login" />} />
         <Route path='/profile/:username' element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
       </Routes>
       {authUser && <RightPanel />}
