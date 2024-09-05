@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { IoSearch } from 'react-icons/io5';
 import RightPanelSkeleton from '../../components/skeletons/RightPanelSkeleton';
 import { FaArrowLeft } from 'react-icons/fa';
+import useFollow from '../../hooks/useFollow';
 
 
 const Search = () => {
@@ -27,6 +28,8 @@ const Search = () => {
     },
     enabled: !!searchTerm, // Chỉ kích hoạt query khi có searchTerm
   });
+
+  const { follow, isPending } = useFollow()
   return (
     <div className='flex-[4_4_0] md:border-r border-gray-700 min-h-screen'>
       <div className='flex items-center justify-center mt-3 gap-3'>
@@ -82,7 +85,7 @@ const Search = () => {
                   follow(user._id);
                 }}
               >
-                Follow
+                {isPending ? <LoadingSpinner size="sm" /> : "Follow"}
               </button>
             </div>
           </Link>

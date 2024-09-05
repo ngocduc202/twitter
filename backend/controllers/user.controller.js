@@ -2,6 +2,7 @@ import Notification from "../models/notification.model.js"
 import User from "../models/user.model.js"
 import bcrypt from "bcryptjs"
 import {v2 as cloudinary} from "cloudinary"
+import {faker} from "@faker-js/faker"
 
 export const getUserProfile = async (req, res) => {
   const {username} = req.params
@@ -160,5 +161,31 @@ export const searchUser = async (req, res) => {
   } catch (error) {
     console.log("Error in searchUser: ", error.message);
     res.status(500).json({ error: error.message });
+  }
+}
+
+export const InsertUser = async (req, res) => {
+  const num = 10
+  const users = [];
+  for (let i = 0; i < num; i++) {
+    users.push({
+      username: faker.internet.userName(),
+      fullName: faker.person.fullName(),
+      password: "123456",
+      email: faker.internet.email(),
+      profileImg: faker.image.url(),
+      coverImg: faker.image.urlLoremFlickr({ width: 200, height: 200 }),
+      bio: faker.person.bio(),
+      link: faker.internet.url(),
+      followers: [],
+      following: [],
+      likedPosts: []
+    });
+  }
+  try {
+    await User.insertMany(users);
+    res.status(201).json({ message: 'Fake users created successfully' });
+  } catch (err) {
+    res.status(500).json({ error: 'Error creating fake users', details: err });
   }
 }
