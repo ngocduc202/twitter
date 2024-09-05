@@ -18,6 +18,20 @@ export const getUserProfile = async (req, res) => {
   }
 }
 
+export const getUsers = async (req, res) => {
+  const { ids } = req.body;
+  try {
+    const users = await User.find({ _id: { $in: ids } }).select("-password");
+    if (!users || users.length === 0) {
+      return res.status(404).json({ error: "Users not found" });
+    }
+    res.status(200).json(users);
+  } catch (error) {
+    console.log("Error in getUsers ", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 
 export const followUnfollowUser = async (req, res) => {
   try {

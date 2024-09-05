@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query"
 import LoadingSpinner from "./components/commom/LoadingSpinner"
 import NavMobile from "./components/commom/NavMobile"
 import Search from "./pages/search/Search"
+import Following from "./components/commom/Following"
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
         <Route path='/notifications' element={authUser ? <NotificationPage /> : <Navigate to="/login" />} />
         <Route path='/search' element={authUser ? <Search /> : <Navigate to="/login" />} />
         <Route path='/profile/:username' element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
+        <Route path='/following' element={authUser ? <Following /> : <Navigate to="/login" />} />
       </Routes>
       {authUser && <RightPanel />}
       <Toaster />
