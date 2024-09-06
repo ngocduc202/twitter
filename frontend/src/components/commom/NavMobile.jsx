@@ -30,6 +30,22 @@ const NavMobile = () => {
     }
   })
   const { data: authUser } = useQuery({ queryKey: ["authUser"] })
+
+  const { data: notifications } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: async () => {
+      try {
+        const res = await fetch("/api/notifications");
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Something went wrong");
+        return data.notifications;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    staleTime: 1000 * 60 * 5, // Cache giữ dữ liệu trong 5 phút
+  });
+  const notificationCount = notifications?.length || 0;
   return (
     <div className='fixed bottom-0 left-0 h-auto w-full border-t border-gray-700 bg-black z-50'>
       <ul className='flex flex-row gap-5 mt-2'>
@@ -45,9 +61,14 @@ const NavMobile = () => {
         <li className='flex justify-center'>
           <Link
             to='/notifications'
-            className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
+            className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer relative'
           >
             <IoNotifications className='w-8 h-8' />
+            {notificationCount > 0 && (
+              <span className='absolute top-1 right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center'>
+                {notificationCount}
+              </span>
+            )}
             <span className='text-lg hidden md:block'>Notifications</span>
           </Link>
         </li>

@@ -1,26 +1,26 @@
+import { useQuery } from '@tanstack/react-query';
 import React from 'react'
 import { FaArrowLeft } from 'react-icons/fa';
-import RightPanelSkeleton from '../skeletons/RightPanelSkeleton';
-import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import useFollow from '../../hooks/useFollow';
+import RightPanelSkeleton from '../skeletons/RightPanelSkeleton';
 import LoadingSpinner from './LoadingSpinner';
+import useFollow from '../../hooks/useFollow';
 
-const Following = () => {
+const Followers = () => {
   const { data: authUser } = useQuery({
     queryKey: ['authUser'],
   })
-  const { data: userFollowing, isLoading, isError } = useQuery({
-    queryKey: ['userFollowing', authUser?.following],
+  const { data: userFollowers, isLoading, isError } = useQuery({
+    queryKey: ['userFollowers', authUser?.f],
     queryFn: async () => {
-      if (!authUser?.following || authUser.following.length === 0) return []; // Nếu không có following thì trả về mảng rỗng
+      if (!authUser?.followers || authUser.followers.length === 0) return []; // Nếu không có following thì trả về mảng rỗng
       try {
         const res = await fetch(`/api/user/users`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ ids: authUser?.following }), // Gửi mảng ID qua POST request
+          body: JSON.stringify({ ids: authUser?.followers }), // Gửi mảng ID qua POST request
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Something went wrong');
@@ -29,9 +29,10 @@ const Following = () => {
         throw new Error(error.message);
       }
     },
-    enabled: !!authUser && authUser.following.length > 0, // Chỉ thực hiện khi authUser đã có dữ liệu và có người dùng để theo dõi
+    enabled: !!authUser && authUser.followers.length > 0, // Chỉ thực hiện khi authUser đã có dữ liệu và có người dùng để theo dõi
   });
   const { follow, isPending } = useFollow()
+
   return (
     <div className='flex-[4_4_0] md:border-r border-gray-700 min-h-screen'>
       <div className='flex items-center ml-5 mt-3 gap-3 '>
@@ -42,7 +43,7 @@ const Following = () => {
           <p className='text-white font-bold text-sm w-20 truncate'>{authUser?.fullName}</p>
           <p className='text-slate-500 text-sm'>@{authUser?.username}</p>
         </div>
-        <span className='text-white font-bold md:hidden'>Following</span>
+        <span className='text-white font-bold md:hidden'>Followers</span>
       </div>
 
 
@@ -56,7 +57,7 @@ const Following = () => {
             <RightPanelSkeleton />
           </>
         )}
-        {!isLoading && userFollowing?.map((user) => (
+        {!isLoading && userFollowers?.map((user) => (
           <Link
             to={`/profile/${user.username}`}
             className='flex items-center justify-between gap-4 w-full mb-3'
@@ -99,4 +100,4 @@ const Following = () => {
   )
 }
 
-export default Following
+export default Followers

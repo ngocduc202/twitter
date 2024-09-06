@@ -33,6 +33,21 @@ const Sidebar = () => {
   })
   const { data: authUser } = useQuery({ queryKey: ["authUser"] })
 
+  const { data: notifications } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: async () => {
+      try {
+        const res = await fetch("/api/notifications");
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Something went wrong");
+        return data.notifications;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    staleTime: 1000 * 60 * 5, // Cache giữ dữ liệu trong 5 phút
+  });
+  const notificationCount = notifications?.length || 0;
   return (
     <div className='md:flex-[2_2_0] w-18 max-w-52'>
       <div className='sticky top-0 left-0 h-screen flex flex-col border-r border-gray-700 w-20 md:w-full'>
@@ -52,9 +67,14 @@ const Sidebar = () => {
           <li className='flex justify-center md:justify-start'>
             <Link
               to='/notifications'
-              className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
+              className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer relative'
             >
               <IoNotifications className='w-6 h-6' />
+              {notificationCount > 0 && (
+                <span className='absolute top-0 left-6 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center'>
+                  {notificationCount}
+                </span>
+              )}
               <span className='text-lg hidden md:block'>Notifications</span>
             </Link>
           </li>

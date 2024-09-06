@@ -32,11 +32,11 @@ const Search = () => {
   const { follow, isPending } = useFollow()
   return (
     <div className='flex-[4_4_0] md:border-r border-gray-700 min-h-screen'>
-      <div className='flex items-center justify-center mt-3 gap-5'>
-        <Link to='/' className='ml-3'>
+      <div className='flex items-center justify-center mt-3 gap-3'>
+        <Link to='/' className='ml-1'>
           <FaArrowLeft className='w-5 h-5' />
         </Link>
-        <span className='w-[48px] h-[48px] flex items-center justify-center rounded-l-full bg-gray-700 relative left-4'>
+        <span className='w-[48px] h-[48px] flex items-center justify-center rounded-l-full bg-gray-700 relative left-6'>
           <IoSearch className='w-6 h-6' />
         </span>
         <input
