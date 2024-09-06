@@ -42,7 +42,7 @@ const Search = () => {
         <input
           type='text'
           placeholder='Search'
-          className='input w-full max-w-[300px] rounded-r-full md:max-w-[500px] bg-gray-700'
+          className='input w-full max-w-[300px] rounded-r-full md:max-w-[500px] bg-gray-700 border-none focus-visible:outline-none'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
